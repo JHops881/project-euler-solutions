@@ -4,6 +4,3 @@ If you are not familiar with [Project Euler](https://projecteuler.net/), go chec
 
 ### This is Spoilers!
 If you plan on participating in Project Euler yourself, don't view these solutions!
-
-
-Note: All the solutions are purely my own, and I strictly prohibit the use of generative AI for any assistance.
