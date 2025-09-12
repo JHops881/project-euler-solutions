@@ -169,14 +169,95 @@ class Computer {
           }
         }
       }
+    }
 
+    int calcaulateDifferenceBetweenFactorialSum(int n) {
+      /*
+      Not sure what to name it. In a sequence of numbers `n` long, find the
+      difference: (1, 2, 3, ... n)^2 - (1^2, 2^2, 3^2, ... n^2)
+      */
+      int a = std::pow((n * (n + 1) / 2), 2); // (1, 2, 3, ... n)^2
+      int b = 0; // sum of 1^2 .. n^2
+      for (int x = 1; x <= n; x++) {
+        int y = std::pow(x, 2);
+        b += y;
+      }
+      int c = a - b;
+      return c;
+    }
+
+    long long findValueOfAdjacentDigits(int numOfDigits, std::string number) {
+      /*
+      Finds the maximum value that can exist in a number from a n-digit long
+      segment if all the digits are multiplied together. 
+      */
+      long long maxProductFound = 0;
+      // Checking all segments of the number that are `numOfDigits` long
+      for (size_t i = 0; i <= number.length() - numOfDigits; i++) {
+        // the `block` is the segment of digits that is `numOfDigits` long.
+        // we multiply all the digits in the block together to find a product.
+        std::string block = number.substr(i, numOfDigits);
+        // identity property, something to muliplying off of.
+        long long blockProduct = 1; 
+        // Finds the product of all the digits multiplied
+        for (size_t j = 0; j < block.length(); j++) {
+         blockProduct *= int(block[j] - '0'); // to correctly convert ASCII
+        }
+        // Enforces a running tracker of the greatest product found yet.
+        if (blockProduct > maxProductFound) maxProductFound = blockProduct;
+      }
+      return maxProductFound;
+    }
+
+    bool isPrime(
+      long long number,
+      std::vector<long long> priorPrimes)
+    {
+      /*
+      Given all the primes that exist less than a `number`, `priorPrimes`,
+      determines if that `number` is prime. 
+      */
+      bool isPrime = false;
+      // Conduct if the number is prime by doing the time test.
+      // To be prime, it has to be a multiple of any prime numbers <= it's sqrt 
+      for (size_t i = 0; priorPrimes[i] <= std::sqrt(number); i++) {
+        // divisible by prime number means not prime -> default isPrime value.
+        if (number % priorPrimes[i] == 0) return isPrime;
+      }
+      // if it passed all the tests..
+      isPrime = true;
+      return isPrime;
+    }
+
+    long long findNthPrimeNumber(int n) {
+      /*
+      For prime numbers 2,3,5,7,11.. we would say that 11 is the 5th prime
+      number in the prime number sequence. This function finds the nth prime
+      number in the prime number sequence. e.g. for n=270, the value is 1733.
+      */
+      // Storing the prime sequence as we go because we need it to run the 
+      // prime test.
+      std::vector<long long> primes = {2};
+      // the next natural number that will be tested to see if it's prime. 
+      long long nextNumber = 3; 
+      int numOfPrimesFound = 1; // Because we start with 2
+      while (true) {
+        if (isPrime(nextNumber, primes)) {
+          primes.push_back(nextNumber);
+          numOfPrimesFound++;
+        }
+        if (numOfPrimesFound == n) {
+          return nextNumber;
+        }
+        nextNumber++;
+      }
     }
 };
 
 int main() {
   
   Computer computer;
-  std::cout << computer.findLargestPrimeFactor(127607576777341);
+  std::cout << computer.findNthPrimeNumber(10001);
   return 0;
 
 }
